@@ -85,7 +85,7 @@ export default function SignIn(props) {
 
     if (!email.value || !/\S+@letta\.com\.tr$/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage('Letta domain required.');
+      setEmailErrorMessage('Letta domaini gereklidir.');
       isValid = false;
     } else {
       setEmailError(false);
@@ -94,7 +94,7 @@ export default function SignIn(props) {
 
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage('Şifre en az 6 karakterden oluşmalıdır.');
       isValid = false;
     } else {
       setPasswordError(false);
@@ -107,7 +107,6 @@ export default function SignIn(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("Handling Submit!")
 
     if (!validateInputs()) return;
 
@@ -139,7 +138,7 @@ export default function SignIn(props) {
       if (result.returnCode == 2) 
       {
 
-        let errText = 'Invalid credentials. Please try again.';
+        let errText = 'Geçersiz değerler, lütfen yeniden deneyiniz.';
         try {
           const err = await response.json();
           if (err?.message) errText = err.message;
@@ -158,7 +157,7 @@ export default function SignIn(props) {
 
     } catch (e) {
       setPasswordError(true);
-      setPasswordErrorMessage('Network error. Please check your connection or VPN and try again.');
+      setPasswordErrorMessage('Bağlantı hatası, bağlantınızı kontrol edip yeniden deneyiniz.');
       console.error(e);
     } finally {
       setSubmitting(false);
@@ -184,7 +183,7 @@ export default function SignIn(props) {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Username</FormLabel>
+              <FormLabel htmlFor="email">Kullanıcı Maili</FormLabel>
               <TextField
                 error={emailError}
                 helperText={emailErrorMessage}
@@ -202,7 +201,7 @@ export default function SignIn(props) {
             </FormControl>
 
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Şifre</FormLabel>
               <TextField
                 error={passwordError}
                 helperText={passwordErrorMessage}

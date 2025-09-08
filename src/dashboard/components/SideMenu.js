@@ -12,6 +12,11 @@ import LogOut from './LogOut';
 import WarehouseSearch from './WarehouseSearch';
 import WarehouseTable from './WarehouseTable';
 
+import { onRefresh } from './refreshBusMenu';
+import Search from './Search';
+import ProductSearch from './ProductSearch';
+import ProductMenu from './ProductMenu';
+
 const drawerWidth = 300;
 
 const Drawer = styled(MuiDrawer)({
@@ -28,6 +33,26 @@ const Drawer = styled(MuiDrawer)({
 export default function SideMenu() {
 
 const [email, setEmail] = React.useState(''); 
+
+const [navIndex, setNavIndex] = React.useState(0);
+
+const refreshNavigate = React.useCallback(async () => {
+
+        setNavIndex(JSON.parse(localStorage.getItem('menuIndex')))
+  
+      },
+      
+      [] 
+    );
+
+    
+React.useEffect( () =>{
+
+const off = onRefresh( () => { refreshNavigate() });
+return off;
+
+}, [refreshNavigate] );
+
 
 React.useEffect( () =>
   { setEmail(localStorage.getItem('userEmail') || '');},
@@ -56,7 +81,11 @@ React.useEffect( () =>
         <MenuContent />
       </Box>
       <Divider/>
-      <Box sx={{
+      {
+        navIndex === 0 && 
+        ( 
+
+         <Box sx={{
         overflow: 'auto',
         height: '100%',
         alignItems: 'center',
@@ -68,6 +97,28 @@ React.useEffect( () =>
         <Divider/>
         <WarehouseTable/>
         </Box>
+
+        )
+      }
+      {
+        navIndex === 1 && 
+        ( 
+          <Box sx={{
+        overflow: 'auto',
+        height: '100%',
+        alignItems: 'center',
+        gap : 4,
+        my: 2,
+        maxHeight : '400px'
+      }}>
+        <ProductSearch/>
+        <Divider/>
+        <ProductMenu/>
+
+        </Box>
+)
+      }
+     
       <Stack
         direction="row"
         sx={{

@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs, { breadcrumbsClasses } from '@mui/material/Breadcrumbs';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
+import { onRefresh } from './refreshBusMenu';
 
 const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
   margin: theme.spacing(1, 0),
@@ -16,15 +17,46 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
 }));
 
 export default function NavbarBreadcrumbs() {
+
+  const [navIndex, setNavIndex] = React.useState(0);
+
+  const refreshNavigate = React.useCallback(async () => {
+
+      setNavIndex(JSON.parse(localStorage.getItem('menuIndex')))
+
+    },
+    
+    [] 
+  );
+
+
+  React.useEffect( () =>{
+  
+  const off = onRefresh( () => { refreshNavigate() });
+  return off;
+
+  }, [refreshNavigate] );
+
+
+
   return (
     <StyledBreadcrumbs
       aria-label="breadcrumb"
       separator={<NavigateNextRoundedIcon fontSize="small" />}
     >
       <Typography variant="body1">Letta ERP</Typography>
-      <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-        Stok Listesi
-      </Typography>
+      {
+        navIndex === 0 && ( <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
+          Stok Listesi
+
+        </Typography>)
+      }
+      {
+        navIndex === 1 && ( <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
+          Ürün Detayları
+
+        </Typography>)
+      }
     </StyledBreadcrumbs>
   );
 }

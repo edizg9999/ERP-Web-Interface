@@ -26,6 +26,8 @@ const xThemeComponents = {
 
 export default function Dashboard(props) {
 
+  localStorage.setItem('productOnDisplay', "-1")
+
 
 
   return (

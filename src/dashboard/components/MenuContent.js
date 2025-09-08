@@ -5,18 +5,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
-import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
-import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
-import { Box, Divider, Typography } from '@mui/material';
 import CategoryIcon from '@mui/icons-material/Category';
-
 import InventoryIcon from '@mui/icons-material/Inventory';
-
+import { emitRefresh } from './refreshBusMenu';
 
 const mainListItems = [
   { text: 'Stok Listesi', icon: <InventoryIcon /> },
@@ -24,20 +15,28 @@ const mainListItems = [
 
 ];
 
-const secondaryListItems = [
-  { text: 'Settings', icon: <SettingsRoundedIcon /> },
-  { text: 'About', icon: <InfoRoundedIcon /> },
-  { text: 'Feedback', icon: <HelpRoundedIcon /> },
-];
-
 export default function MenuContent() {
+
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  localStorage.setItem('menuIndex', JSON.stringify(selectedIndex));
+
+  function handleChange(index){
+
+    setSelectedIndex(index);
+    localStorage.setItem('menuIndex', JSON.stringify(index));
+
+    emitRefresh();
+
+  };
+
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       
       <List dense>
         {mainListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton selected={index === 0}>
+            <ListItemButton selected={index === selectedIndex}
+            onClick={() => handleChange(index)}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>

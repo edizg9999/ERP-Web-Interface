@@ -1,18 +1,17 @@
 import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Copyright from '../internals/components/Copyright';
-import ChartUserByCountry from './ChartUserByCountry';
-import CustomizedTreeView from './CustomizedTreeView';
-import CustomizedDataGrid from './CustomizedDataGrid';
-import HighlightedCard from './HighlightedCard';
-import PageViewsBarChart from './PageViewsBarChart';
-import SessionsChart from './SessionsChart';
-import StatCard from './StatCard';
 import StockTable from './StockTable';
 
+import { onRefresh } from './refreshBusMenu';
+import { onRefreshProduct } from './refreshBusProductMenu';
+import { Typography } from '@mui/material';
+import ProductGeneral from './ProductGeneral';
+import ManufInfo from './ManufInfo';
+import RackInfo from './RackInfo';
+import Receipts from './Receipts';
+
+/*
 const data = [
   {
     title: 'Users',
@@ -46,13 +45,71 @@ const data = [
   },
 ];
 
+*/
+
+
+
 export default function MainGrid() {
+
+  const [navIndex, setNavIndex] = React.useState(0);
+  const [productIndex, setProductIndex] = React.useState(0);
+
+  //Refresh for main menu
+
+  const refreshNavigate = React.useCallback(async () => {
+
+          setNavIndex(JSON.parse(localStorage.getItem('menuIndex')))
+    
+        },
+        
+        [] 
+      );
+
+      
+  React.useEffect( () =>{
+
+  const off = onRefresh( () => { refreshNavigate() });
+  return off;
+
+  }, [refreshNavigate] );
+
+  // Refresh for product menu
+
+  const refreshNavigateProduct = React.useCallback(async () => {
+
+          setProductIndex(JSON.parse(localStorage.getItem('productIndex')))    
+    
+        },
+        
+        [] 
+      );
+
+      
+  React.useEffect( () =>{
+
+  const off = onRefreshProduct( () => { refreshNavigateProduct() });
+  return off;
+  
+
+  }, [refreshNavigateProduct] );
+
+
+
+
+
+
+
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
       {/* cards */}
       
           <Grid>
-            <StockTable/>
+            {navIndex === 0 && <StockTable/>}
+            {navIndex === 1 && productIndex === 0 && <ProductGeneral/>}
+            {navIndex === 1 && productIndex === 1 && <ManufInfo/>}
+            {navIndex === 1 && productIndex === 2 && <RackInfo/>}
+            {navIndex === 1 && productIndex === 3 && <Receipts/>}
+
           </Grid>
     </Box>
   );

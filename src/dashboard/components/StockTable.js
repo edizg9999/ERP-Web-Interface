@@ -114,7 +114,7 @@ const rows = [
 //Sütun bilgisi
 
 const headCells = [
-  { id: "idStockCard", label: "Id Stock Card", numeric: true },
+  //{ id: "idStockCard", label: "Id Stock Card", numeric: true },
   { id: "stockCode", label: "Stok Kodu", numeric: false },
   { id: "stockQuantity", label: "Stok Adedi", numeric: true },
   { id: "description1", label: "Açıklama 1", numeric: false },
