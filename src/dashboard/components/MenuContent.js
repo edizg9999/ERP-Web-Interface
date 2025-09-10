@@ -8,6 +8,7 @@ import Stack from '@mui/material/Stack';
 import CategoryIcon from '@mui/icons-material/Category';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { emitRefresh } from './refreshBusMenu';
+import { onRefreshClickedRow } from './refreshBusClickedRow';
 
 const mainListItems = [
   { text: 'Stok Listesi', icon: <InventoryIcon /> },
@@ -28,6 +29,26 @@ export default function MenuContent() {
     emitRefresh();
 
   };
+
+   const refreshNavigate = React.useCallback(async () => {
+
+              setSelectedIndex(1);
+  
+
+          
+              },
+              
+              [] 
+          );
+  
+          
+      React.useEffect( () =>{
+  
+      const off = onRefreshClickedRow( () => { refreshNavigate() });
+      return off;
+  
+      }, [refreshNavigate] );
+  
 
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>

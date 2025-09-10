@@ -4,6 +4,8 @@ import { Box, Checkbox, Typography } from '@mui/material';
 import StockTable from './StockTable';
 import { emitRefresh } from './refreshBus';
 
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+
 
 
 
@@ -119,6 +121,13 @@ async function GetQuantityData() {
             >
                 ARA
             </Button>
+            <Box display='flex' sx={{alignItems: 'center', marginLeft: '5px'}}>
+
+               {loading == true && <HourglassBottomIcon/>}
+
+            </Box>
+
+
 
         </Box>
         </>

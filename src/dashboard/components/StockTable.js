@@ -19,6 +19,9 @@ import {
 
 import { onRefresh } from "./refreshBus";
 
+import { emitRefresh } from './refreshBusMenu';
+import { emitRefreshClickedRow } from './refreshBusClickedRow';
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) return -1;
   if (b[orderBy] > a[orderBy]) return 1;
@@ -283,6 +286,18 @@ export default function StockCard() {
 
   }, [refreshQuantities] );
 
+  const clickedRow = (id) =>
+  {
+
+    localStorage.setItem('menuIndex', JSON.stringify(1));
+    localStorage.setItem('clickedProductId', JSON.stringify(id));
+
+    emitRefreshClickedRow();
+    emitRefresh();
+
+
+  }
+
   if (loading) return <Typography sx={{ p: 2 }}>Yükleniyor…</Typography>;
   if (error)   return <Typography sx={{ p: 2, color: "crimson" }}>{error}</Typography>;
 
@@ -311,7 +326,7 @@ export default function StockCard() {
               />
               <TableBody>
                 {paged.map((row) => (
-                  <TableRow hover key={row.idStockCard}>
+                  <TableRow hover key={row.idStockCard} onClick={() => clickedRow(row.idStockCard)}>
                     {headCells.map((head) => (
                       <TableCell key={head.id} align={head.numeric ? "right" : "left"}>
                         {String(row[head.id])}

@@ -24,7 +24,7 @@ const mainListItems = [
 
 export default function ProductMenu() {
 
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(JSON.parse(localStorage.getItem('productIndex')));
   localStorage.setItem('productIndex', JSON.stringify(selectedIndex));
 
   function handleChange(index){

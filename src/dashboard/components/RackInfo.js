@@ -11,39 +11,14 @@ const headCells = [
 
 export default function RackInfo()
 {
-    const [manufData, setManufData] = React.useState([]);
+    const [rackData, setRackData] = React.useState(JSON.parse(localStorage.getItem('productRackData')));
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
 
     const refreshNavigate = React.useCallback(async () => {
 
-        const value = JSON.parse(localStorage.getItem('productOnDisplay'))
-
-        setLoading(true)
-
-        try {
-        const res = await fetch(`https://10.1.1.12:8005/api/RackPlacement/GetByStockCardId/${value}`, {
-            headers: {
-            accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-            },
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json(); 
-
-        const arr = Array.isArray(json?.data) ? json.data : [];
-        setManufData(arr.map((r) => ({ rackName: r.rackName })));
-
-        } 
-        catch (e) 
-        {
-            setError(e.message || "Failed to load");
-        } 
-        finally 
-        {
-            setLoading(false);
-        }
+        const arr = JSON.parse(localStorage.getItem('productRackData'));
+        setRackData(arr.map((r) => ({ rackName: r.rackName })));
 
         },
         
@@ -88,7 +63,7 @@ export default function RackInfo()
                  </TableHead>
                  <TableBody>
 
-                    {manufData.map((row) => (
+                    {rackData.map((row) => (
                         <TableRow>
                         {headCells.map((head) => (
                             <TableCell key={head.id} align={head.numeric ? "right" : "left"}>

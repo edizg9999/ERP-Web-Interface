@@ -14,40 +14,15 @@ const headCells = [
 
 export default function Receipts()
 {
-    const [manufData, setManufData] = React.useState([]);
+    const [receiptData, setReceiptData] = React.useState(JSON.parse(localStorage.getItem('productReceiptData')));
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
 
     const refreshNavigate = React.useCallback(async () => {
 
-        const value = JSON.parse(localStorage.getItem('productOnDisplay'))
-
-        setLoading(true)
-
-        try {
-        const res = await fetch(`https://10.1.1.12:8005/api/BomTable/GetByExistingStockCard/${value}`, {
-            headers: {
-            accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-            },
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json(); 
-
-        const arr = Array.isArray(json?.data) ? json.data : [];
-        setManufData(arr.map((r) => ({ stockCode: r.stockCode, stockDescription1: r.stockDescription1, 
+        const arr = JSON.parse(localStorage.getItem('productReceiptData'));
+        setReceiptData(arr.map((r) => ({ stockCode: r.stockCode, stockDescription1: r.stockDescription1, 
           stockDescription2: r.stockDescription2, bomDescription1: r.bomDescription1 })));
-
-        } 
-        catch (e) 
-        {
-            setError(e.message || "Failed to load");
-        } 
-        finally 
-        {
-            setLoading(false);
-        }
 
         },
         
@@ -92,7 +67,7 @@ export default function Receipts()
                  </TableHead>
                  <TableBody>
 
-                    {manufData.map((row) => (
+                    {receiptData.map((row) => (
                         <TableRow>
                         {headCells.map((head) => (
                             <TableCell key={head.id} align={head.numeric ? "right" : "left"}>

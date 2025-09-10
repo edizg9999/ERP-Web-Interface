@@ -9,45 +9,22 @@ export default function ProductGeneral()
 {
     const [imgIndex, setImgIndex] = React.useState(1);
 
-    const [imgSource1, setImgSource1] = React.useState("");
-    const [imgSource2, setImgSource2] = React.useState("");
-    const [imgSource3, setImgSource3] = React.useState("");
+    const [imgSource1, setImgSource1] = React.useState(JSON.parse(localStorage.getItem('productGeneralData')).imagePath1);
+    const [imgSource2, setImgSource2] = React.useState(JSON.parse(localStorage.getItem('productGeneralData')).imagePath2);
+    const [imgSource3, setImgSource3] = React.useState(JSON.parse(localStorage.getItem('productGeneralData')).imagePath3);
 
-    const [stockData, setStockData] = React.useState(null);
+    const [stockData, setStockData] = React.useState(JSON.parse(localStorage.getItem('productGeneralData')));
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
 
     const refreshNavigate = React.useCallback(async () => {
 
-        const value = JSON.parse(localStorage.getItem('productOnDisplay'))
+        setStockData(JSON.parse(localStorage.getItem('productGeneralData')));
+        setImgSource1(JSON.parse(localStorage.getItem('productGeneralData')).imagePath1);
+        setImgSource2(JSON.parse(localStorage.getItem('productGeneralData')).imagePath2);
+        setImgSource3(JSON.parse(localStorage.getItem('productGeneralData')).imagePath3);
 
-        setLoading(true)
 
-        try {
-        const res = await fetch(`https://10.1.1.12:8005/api/StockCard/${value}`, {
-            headers: {
-            accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-            },
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json(); 
-
-        setStockData(json.data);
-        setImgSource1(json.data.imagePath1);
-        setImgSource2(json.data.imagePath2);
-        setImgSource3(json.data.imagePath3);
-
-        } 
-        catch (e) 
-        {
-            setError(e.message || "Failed to load");
-        } 
-        finally 
-        {
-            setLoading(false);
-        }
 
         },
         

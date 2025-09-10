@@ -52,7 +52,7 @@ const data = [
 export default function MainGrid() {
 
   const [navIndex, setNavIndex] = React.useState(0);
-  const [productIndex, setProductIndex] = React.useState(0);
+  const [productIndex, setProductIndex] = React.useState(JSON.parse(localStorage.getItem('productIndex')));
 
   //Refresh for main menu
 

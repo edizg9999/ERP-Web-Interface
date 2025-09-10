@@ -12,39 +12,15 @@ const headCells = [
 
 export default function ManufInfo()
 {
-    const [manufData, setManufData] = React.useState([]);
+    const [manufData, setManufData] = React.useState(JSON.parse(localStorage.getItem('productManufData')));
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
 
     const refreshNavigate = React.useCallback(async () => {
 
-        const value = JSON.parse(localStorage.getItem('productOnDisplay'))
-
-        setLoading(true)
-
-        try {
-        const res = await fetch(`https://10.1.1.12:8005/api/ManufacturerStockCode/GetByStockCardId/${value}`, {
-            headers: {
-            accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-            },
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json(); 
-
-        const arr = Array.isArray(json?.data) ? json.data : [];
+        const arr = JSON.parse(localStorage.getItem('productManufData'));
         setManufData(arr.map((r) => ({ manufacturerName: r.manufacturerName, manufacturerCode: r.manufacturerCode })));
 
-        } 
-        catch (e) 
-        {
-            setError(e.message || "Failed to load");
-        } 
-        finally 
-        {
-            setLoading(false);
-        }
 
         },
         
